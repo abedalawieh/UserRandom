@@ -28,6 +28,7 @@ const GetUsers = () => {
   const [number, setNumber] = useState(1);
   const [newUsers, setNewUsers] = useState([]);
   const [user, setUser] = useState({});
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
