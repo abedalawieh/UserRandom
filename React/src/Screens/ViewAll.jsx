@@ -14,13 +14,21 @@ import SavedUserCard from "../Components/SvedUserCards";
 import DateComp from "../Components/DateComp";
 const defaultTheme = createTheme();
 const id = sessionStorage.getItem("id");
+const token = sessionStorage.getItem("token");
+
 const ViewAll = () => {
   const { keyword, setKeyword, low, high, setLow, setHigh } =
     useContext(RecoveryContext);
   const fetchSavedUsers = () => {
     try {
       fetch(
-        `http://localhost:8800/api/getAll?userid=${id}&low=${low}&high=${high}`
+        `http://localhost:8800/api/getAll?id=${id}&low=${low}&high=${high}`,
+        {
+          headers: {
+            // Include the token in the request headers
+            Authorization: token,
+          },
+        }
       )
         .then((response) => response.json())
         .then((data) => {

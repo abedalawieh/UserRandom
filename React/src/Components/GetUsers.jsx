@@ -20,6 +20,7 @@ import { RecoveryContext } from "../App";
 
 const defaultTheme = createTheme();
 const id = sessionStorage.getItem("id");
+const token = sessionStorage.getItem("token");
 
 const GetUsers = () => {
   const { keyword, setKeyword, low, high, setLow, setHigh } =
@@ -98,10 +99,19 @@ const GetUsers = () => {
   const handleSaveAll = () => {
     try {
       axios
-        .post("http://localhost:8800/api/saveAll", {
-          users: newUsers,
-          userid: id,
-        })
+        .post(
+          "http://localhost:8800/api/saveAll",
+          {
+            users: newUsers,
+            userid: id,
+          },
+          {
+            headers: {
+              // Include the token in the request headers
+              Authorization: token,
+            },
+          }
+        )
         .then((response) => {
           if (response.status === 200) {
             // Users saved successfully, remove them from the display

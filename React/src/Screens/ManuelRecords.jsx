@@ -14,6 +14,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
 const defaultTheme = createTheme();
+const token = sessionStorage.getItem("token");
 
 const ManuelRecords = () => {
   const navigate = useNavigate();
@@ -35,7 +36,12 @@ const ManuelRecords = () => {
   const handleSave = () => {
     try {
       axios
-        .post("http://localhost:8800/api/createUser", values)
+        .post("http://localhost:8800/api/createUser", values, {
+          headers: {
+            // Include the token in the request headers
+            Authorization: token,
+          },
+        })
         .then((res) => {
           if (res.data.Status === "Successs") {
             setMessager("User Saved Successfully");

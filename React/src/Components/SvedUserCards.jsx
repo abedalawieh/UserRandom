@@ -27,7 +27,7 @@ const VisuallyHiddenInput = styled("input")`
   white-space: nowrap;
   width: 1px;
 `;
-
+const token = sessionStorage.getItem("token");
 const SavedUserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
   const itemsPerRow = window.innerWidth < 600 ? 1 : 3; // Display 1 item on small screens
   const [name, setName] = useState(user.name);
@@ -89,10 +89,19 @@ const SavedUserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
   const handleSave = () => {
     try {
       axios
-        .post("http://localhost:8800/api/updateUser", {
-          data: getUpdatedUser(),
-          userid: id,
-        })
+        .post(
+          "http://localhost:8800/api/updateUser",
+          {
+            data: getUpdatedUser(),
+            userid: id,
+          },
+          {
+            headers: {
+              // Include the token in the request headers
+              Authorization: token,
+            },
+          }
+        )
         .then((res) => {
           if (res.data.Status === "Successs") {
             setMessager("User Saved Successfully");
@@ -115,10 +124,19 @@ const SavedUserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
   const deleteUser = async () => {
     try {
       const response = await axios
-        .post("http://localhost:8800/api/deleteUser", {
-          data: getUpdatedUser(),
-          userid: id,
-        })
+        .post(
+          "http://localhost:8800/api/deleteUser",
+          {
+            data: getUpdatedUser(),
+            userid: id,
+          },
+          {
+            headers: {
+              // Include the token in the request headers
+              Authorization: token,
+            },
+          }
+        )
         .then((resp) => {
           console.log(resp);
           onRemoveSavedUser(user);

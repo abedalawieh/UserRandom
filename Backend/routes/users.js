@@ -7,16 +7,17 @@ import {
   deleteUser,
   createUser,
 } from "../middleware/users.js";
+import verifyToken from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/getAll", getUsers);
-router.post("/saveAll", saveUsers);
-router.post("/saveUser", saveUser);
-router.post("/updateUser", updateUser); // Changed to PUT for updating/
+router.get("/getAll", verifyToken, getUsers);
+router.post("/saveAll", verifyToken, saveUsers);
+router.post("/saveUser", verifyToken, saveUser);
+router.post("/updateUser", verifyToken, updateUser); // Changed to PUT for updating/
 
-router.post("/deleteUser", deleteUser); // Changed to DELETE for deletion
-router.post("/createUser", createUser); // Changed to DELETE for deletion
+router.post("/deleteUser", verifyToken, deleteUser); // Changed to DELETE for deletion
+router.post("/createUser", verifyToken, createUser); // Changed to DELETE for deletion
 
 export default router;
 // getUsers, saveUsers, saveUser, updateUser, deleteUser

@@ -27,7 +27,7 @@ const VisuallyHiddenInput = styled("input")`
   white-space: nowrap;
   width: 1px;
 `;
-
+const token = sessionStorage.getItem("token");
 const UserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
   const itemsPerRow = window.innerWidth < 600 ? 1 : 3; // Display 1 item on small screens
   const [messager, setMessager] = useState("");
@@ -96,10 +96,19 @@ const UserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
 
   const handleSave = () => {
     axios
-      .post("http://localhost:8800/api/saveUser", {
-        data: getUpdatedUser(),
-        userid: id,
-      })
+      .post(
+        "http://localhost:8800/api/saveUser",
+        {
+          data: getUpdatedUser(),
+          userid: id,
+        },
+        {
+          headers: {
+            // Include the token in the request headers
+            Authorization: token,
+          },
+        }
+      )
       .then((res) => {
         if (res.data.Status === "Successs") {
           setMessager("User Saved Succesfully");

@@ -1,8 +1,9 @@
 import { json } from "express";
+import verifyToken from "./auth.js";
 import { db } from "../db.js";
 export const getUsers = (req, res) => {
   try {
-    let { userid, low, high } = req.query;
+    let { id, low, high } = req.query;
     let whereClause = ""; // Initialize an empty WHERE clause
 
     if (low && high) {
@@ -17,7 +18,7 @@ export const getUsers = (req, res) => {
     }
 
     // Construct the SQL query with the WHERE clause
-    const getUsers = `SELECT * FROM usersdata WHERE userid = ${userid} ${whereClause}`;
+    const getUsers = `SELECT * FROM usersdata WHERE userid = ${id} ${whereClause}`;
 
     db.query(getUsers, (error, result) => {
       if (error) {

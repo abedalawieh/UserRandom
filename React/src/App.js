@@ -28,7 +28,6 @@ function App() {
   const [loggedin, setLoggedIn] = useState(false);
 
   const status = sessionStorage.getItem("loggedin");
-
   useEffect(() => {
     if (status == "true") {
       setLoggedIn(true);

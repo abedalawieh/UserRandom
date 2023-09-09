@@ -16,6 +16,8 @@ const Header = () => {
 
     sessionStorage.removeItem("id");
     sessionStorage.removeItem("newUsers");
+
+    sessionStorage.removeItem("token");
     setLoggedIn(false);
   };
   return (

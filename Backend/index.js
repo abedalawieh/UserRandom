@@ -4,9 +4,11 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import { db } from "./db.js";
 import router from "./routes/users.js";
+import dotenv from "dotenv";
+import verifyToken from "./middleware/auth.js";
 const app = express();
 app.use(express.json());
-
+dotenv.config();
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -28,7 +30,10 @@ const upload = multer({ storage });
 app.use("/api", router);
 app.post("/api/login", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { valuesLogin } = req.body;
+    const username = valuesLogin.username;
+    const password = valuesLogin.password;
+
     const sql = "SELECT * FROM users WHERE username = ? ";
 
     db.query(sql, [username], async (err, data) => {
@@ -38,9 +43,13 @@ app.post("/api/login", async (req, res) => {
       } else if (data.length > 0) {
         const userpass = data[0];
         const id = userpass.id;
+
         if (password === userpass.password) {
           // Correctly compare the passwords (not recommended for production)
-          return res.status(200).json({ Status: "Success", id });
+          const token = jwt.sign({ id }, process.env.JSON_SECRET, {
+            expiresIn: 300,
+          });
+          return res.status(200).json({ Status: "Success", id, token });
         } else {
           return res.json({
             Message:

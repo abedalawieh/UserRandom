@@ -31,13 +31,15 @@ const LoginScreen = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8800/api/login", valuesLogin)
+      .post("http://localhost:8800/api/login", { valuesLogin })
       .then((res) => {
         if (res.data.Status === "Success") {
           const id = res.data.id;
+          const token = res.data.token;
           sessionStorage.setItem("loggedin", true);
           sessionStorage.setItem("id", id);
-          console.log(id);
+          sessionStorage.setItem("token", token);
+
           setLoggedIn(true);
 
           navigate("/newUsersRequest");
