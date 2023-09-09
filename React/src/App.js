@@ -58,7 +58,6 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LoginScreen />} />
-          <Route path="/abc" element={<FirstComponent />} />
 
           <Route
             path="/newUsersRequest"

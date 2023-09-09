@@ -87,20 +87,31 @@ const SavedUserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
   });
 
   const handleSave = () => {
-    axios
-      .post("http://localhost:8800/api/updateUser", {
-        data: getUpdatedUser(),
-        userid: id,
-      })
-      .then((res) => {
-        if (res.data.Status === "Successs") {
-          setMessager("User Saved Succesfully");
-        } else {
-          setMessager(res.data.Message);
-        }
-      })
-      .catch((err) => console.log(err));
+    try {
+      axios
+        .post("http://localhost:8800/api/updateUser", {
+          data: getUpdatedUser(),
+          userid: id,
+        })
+        .then((res) => {
+          if (res.data.Status === "Successs") {
+            setMessager("User Saved Successfully");
+          } else {
+            setMessager(res.data.Message);
+          }
+        })
+        .catch((err) => {
+          console.error("Axios error in handleSave:", err);
+          // Handle the error as needed, e.g., display an error message
+          setMessager("An error occurred while saving the user.");
+        });
+    } catch (error) {
+      console.error("Error in handleSave:", error);
+      // Handle the error as needed, e.g., display an error message
+      setMessager("An error occurred while saving the user.");
+    }
   };
+
   const deleteUser = async () => {
     try {
       const response = await axios

@@ -33,17 +33,27 @@ const ManuelRecords = () => {
     dob: "",
   });
   const handleSave = () => {
-    axios
-      .post("http://localhost:8800/api/createUser", values)
-      .then((res) => {
-        if (res.data.Status === "Successs") {
-          setMessager("User Saved Succesfully");
-          navigate("/newUsers");
-        } else {
-          setMessager(res.data.Message);
-        }
-      })
-      .catch((err) => console.log(err));
+    try {
+      axios
+        .post("http://localhost:8800/api/createUser", values)
+        .then((res) => {
+          if (res.data.Status === "Successs") {
+            setMessager("User Saved Successfully");
+            navigate("/newUsers");
+          } else {
+            setMessager(res.data.Message);
+          }
+        })
+        .catch((err) => {
+          console.error("Axios error:", err);
+          // Handle the error as needed, e.g., display an error message
+          setMessager("An error occurred while saving the user.");
+        });
+    } catch (error) {
+      console.error("Error in handleSave:", error);
+      // Handle the error as needed, e.g., display an error message
+      setMessager("An error occurred while saving the user.");
+    }
   };
 
   return (

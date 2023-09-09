@@ -96,21 +96,26 @@ const GetUsers = () => {
   };
 
   const handleSaveAll = () => {
-    // Send a POST request to your Node.js server to save the users
-    axios
-      .post("http://localhost:8800/api/saveAll", {
-        users: newUsers,
-        userid: id,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          // Users saved successfully, remove them from the display
-          setNewUsers([]);
-        }
-      })
-      .catch((error) => {
-        console.error("Error saving users:", error);
-      });
+    try {
+      axios
+        .post("http://localhost:8800/api/saveAll", {
+          users: newUsers,
+          userid: id,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            // Users saved successfully, remove them from the display
+            setNewUsers([]);
+          }
+        })
+        .catch((error) => {
+          console.error("Axios error in handleSaveAll:", error);
+          // Handle the error as needed, e.g., display an error message
+        });
+    } catch (error) {
+      console.error("Error in handleSaveAll:", error);
+      // Handle the error as needed, e.g., display an error message
+    }
   };
 
   return (

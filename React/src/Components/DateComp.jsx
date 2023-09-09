@@ -13,26 +13,34 @@ export default function FirstComponent() {
   return (
     <Container>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Typography>Sort by date of birth</Typography>
+        <Typography>Filter by date of birth</Typography>
         <DatePicker
           label="From"
           onChange={(date) => {
-            if (date) {
-              const isoDate = date.toISOString();
-              setLow(isoDate);
-            } else {
-              setLow(null);
+            try {
+              if (date) {
+                const isoDate = date.toISOString();
+                setLow(isoDate);
+              } else {
+                setLow(null);
+              }
+            } catch (e) {
+              console.log("error", e);
             }
           }}
         />
         <DatePicker
           label="To"
           onChange={(date) => {
-            if (date) {
-              const isoDate = date.toISOString();
-              setHigh(isoDate);
-            } else {
-              setHigh(null);
+            try {
+              if (date) {
+                const isoDate = date.toISOString();
+                setHigh(isoDate);
+              } else {
+                setHigh(null);
+              }
+            } catch (e) {
+              console.log("error", e);
             }
           }}
         />{" "}

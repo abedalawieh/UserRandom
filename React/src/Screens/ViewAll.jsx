@@ -19,7 +19,9 @@ const ViewAll = () => {
     useContext(RecoveryContext);
   const fetchSavedUsers = () => {
     try {
-      fetch(`http://localhost:8800/api/getAll?low=${low}&high=${high}`)
+      fetch(
+        `http://localhost:8800/api/getAll?userid=${id}&low=${low}&high=${high}`
+      )
         .then((response) => response.json())
         .then((data) => {
           setNewUsers(data.data);
@@ -31,7 +33,7 @@ const ViewAll = () => {
 
   useEffect(() => {
     fetchSavedUsers(); // Fetch data when the component mounts
-  }, []); // Empty dependency array to run the effect only once
+  }, [low, high]); // Empty dependency array to run the effect only once
   const [newUsers, setNewUsers] = useState([]);
   const [user, setUser] = useState({});
 

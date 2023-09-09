@@ -2,22 +2,22 @@ import { json } from "express";
 import { db } from "../db.js";
 export const getUsers = (req, res) => {
   try {
-    let { low, high } = req.query;
+    let { userid, low, high } = req.query;
     let whereClause = ""; // Initialize an empty WHERE clause
 
     if (low && high) {
       // Both low and high provided, use BETWEEN
-      whereClause = ` WHERE dob BETWEEN '${low}' AND '${high}'`;
+      whereClause = ` AND dob BETWEEN '${low}' AND '${high}'`;
     } else if (low) {
       // Only low provided
-      whereClause = ` WHERE dob > '${low}'`;
+      whereClause = ` AND dob > '${low}'`;
     } else if (high) {
       // Only high provided
-      whereClause = ` WHERE dob < '${high}'`;
+      whereClause = ` AND dob < '${high}'`;
     }
 
     // Construct the SQL query with the WHERE clause
-    const getUsers = `SELECT * FROM usersdata${whereClause}`;
+    const getUsers = `SELECT * FROM usersdata WHERE userid = ${userid} ${whereClause}`;
 
     db.query(getUsers, (error, result) => {
       if (error) {
@@ -43,34 +43,42 @@ export const getUsers = (req, res) => {
 };
 
 export const saveUsers = (req, res) => {
-  const { users, userid } = req.body;
+  try {
+    const { users, userid } = req.body;
 
-  // Assuming you send an array of user objects in the request body
+    // Assuming you send an array of user objects in the request body
 
-  const query =
-    "INSERT INTO usersdata (userid, uuid, picture, name, email, location, phone, nationality, dob) VALUES ?";
+    const query =
+      "INSERT INTO usersdata (userid, uuid, picture, name, email, location, phone, nationality, dob) VALUES ?";
 
-  const values = users.map((user) => [
-    userid, // Add the userid to each row
-    user.uuid,
-    user.picture,
-    user.name,
-    user.email,
-    user.location,
-    user.phone,
-    user.nationality,
-    user.dob,
-  ]);
+    const values = users.map((user) => [
+      userid, // Add the userid to each row
+      user.uuid,
+      user.picture,
+      user.name,
+      user.email,
+      user.location,
+      user.phone,
+      user.nationality,
+      user.dob,
+    ]);
 
-  db.query(query, [values], (err, result) => {
-    if (err) {
-      console.error("Error saving users:", err);
-      res.status(500).json({ error: "Error saving users" });
-    } else {
-      console.log("Users saved successfully");
-      res.status(200).json({ message: "Users saved successfully" });
-    }
-  });
+    db.query(query, [values], (err, result) => {
+      if (err) {
+        console.error("Error saving users:", err);
+        res.status(500).json({ error: "Error saving users" });
+      } else {
+        console.log("Users saved successfully");
+        res.status(200).json({ message: "Users saved successfully" });
+      }
+    });
+  } catch (e) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      description: "Server Error",
+    });
+  }
 };
 
 export const saveUser = async (req, res) => {
@@ -168,20 +176,28 @@ export const updateUser = (req, res) => {
 };
 
 export const deleteUser = (req, res) => {
-  const {
-    userid,
-    data: { uuid },
-  } = req.body;
+  try {
+    const {
+      userid,
+      data: { uuid },
+    } = req.body;
 
-  const deleteQuery = "DELETE FROM usersdata WHERE userid = ? AND uuid = ?";
+    const deleteQuery = "DELETE FROM usersdata WHERE userid = ? AND uuid = ?";
 
-  db.query(deleteQuery, [userid, uuid], (error) => {
-    if (error) {
-      console.error("Error deleting user:", error);
-      return res.status(500).json({ Message: "Server Side Error" });
-    }
+    db.query(deleteQuery, [userid, uuid], (error) => {
+      if (error) {
+        console.error("Error deleting user:", error);
+        return res.status(500).json({ Message: "Server Side Error" });
+      }
 
-    // Send a success response here if the deletion was successful
-    res.status(200).json({ Message: "User deleted successfully" });
-  });
+      // Send a success response here if the deletion was successful
+      res.status(200).json({ Message: "User deleted successfully" });
+    });
+  } catch (e) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      description: "Server Error",
+    });
+  }
 };
