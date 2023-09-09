@@ -3,17 +3,21 @@ import { db } from "../db.js";
 export const getUsers = (req, res) => {
   try {
     let { low, high } = req.query;
-    const getUsers = `SELECT * FROM usersdata`;
+    let whereClause = ""; // Initialize an empty WHERE clause
 
-    // if (low) {
-    //   getposts += ` WHERE cat = '${category}'`;
-    // }
+    if (low && high) {
+      // Both low and high provided, use BETWEEN
+      whereClause = ` WHERE dob BETWEEN '${low}' AND '${high}'`;
+    } else if (low) {
+      // Only low provided
+      whereClause = ` WHERE dob > '${low}'`;
+    } else if (high) {
+      // Only high provided
+      whereClause = ` WHERE dob < '${high}'`;
+    }
 
-    // if (sort === "LowestToHighest") {
-    //   getposts += ` ORDER BY fees ASC`;
-    // } else if (sort === "HighestToLowest") {
-    //   getposts += ` ORDER BY fees DESC`;
-    // }
+    // Construct the SQL query with the WHERE clause
+    const getUsers = `SELECT * FROM usersdata${whereClause}`;
 
     db.query(getUsers, (error, result) => {
       if (error) {

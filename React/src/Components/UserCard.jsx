@@ -37,6 +37,8 @@ const UserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
   const [phone, setPhone] = useState(user.phone);
   const [nationality, setNationality] = useState(user.nationality);
   const [dob, setDob] = useState(user.dob);
+  const [timeStamp, setTimeStamp] = useState("");
+
   const picture = useRef(user.picture);
   const uuid = useRef(user.uuid);
   const id = sessionStorage.getItem("id");
@@ -59,6 +61,10 @@ const UserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
   };
   const handleDobChange = ({ target: { value } }) => {
     setDob(value);
+    const date = new Date(dob);
+    const dateTimestamp = date.getTime();
+    setTimeStamp(dateTimestamp);
+    console.log(timeStamp);
   };
 
   const updateUser = () => {
@@ -76,6 +82,7 @@ const UserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
     dob,
     onUpdateUser,
   ]);
+
   const getUpdatedUser = () => ({
     uuid: uuid.current,
     picture: picture.current,

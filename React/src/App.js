@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 import ViewAll from "./Screens/ViewAll";
 import ManuelRecords from "./Screens/ManuelRecords";
+import FirstComponent from "./Components/DateComp";
 
 export const RecoveryContext = createContext();
 
@@ -21,7 +22,11 @@ function App() {
   const [submitted, setSubmitted] = useState(false);
   const [newUsers, setNewUsers] = useState([]);
   const [keyword, setKeyword] = useState("");
+  const [low, setLow] = useState("");
+  const [high, setHigh] = useState("");
+
   const [loggedin, setLoggedIn] = useState(false);
+
   const status = sessionStorage.getItem("loggedin");
 
   useEffect(() => {
@@ -44,11 +49,17 @@ function App() {
         setKeyword,
         loggedin,
         setLoggedIn,
+        setLow,
+        low,
+        setHigh,
+        high,
       }}
     >
       <Router>
         <Routes>
           <Route path="/" element={<LoginScreen />} />
+          <Route path="/abc" element={<FirstComponent />} />
+
           <Route
             path="/newUsersRequest"
             element={loggedin ? <GetUsers /> : <LoginScreen />}

@@ -9,6 +9,7 @@ import { styled } from "@mui/material/styles";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useContext, useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import DateComp from "./DateComp";
 
 import Header from "./Header";
 import UserCard from "./UserCard";
@@ -21,8 +22,8 @@ const defaultTheme = createTheme();
 const id = sessionStorage.getItem("id");
 
 const GetUsers = () => {
-  const { keyword, setKeyword } = useContext(RecoveryContext);
-
+  const { keyword, setKeyword, low, high, setLow, setHigh } =
+    useContext(RecoveryContext);
   const [messager, setMessager] = useState("");
   const [number, setNumber] = useState(1);
   const [newUsers, setNewUsers] = useState([]);
@@ -110,6 +111,7 @@ const GetUsers = () => {
         console.error("Error saving users:", error);
       });
   };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Header />
@@ -168,6 +170,9 @@ const GetUsers = () => {
         >
           Save All
         </Button>
+        <div style={{ marginBottom: "20px" }}>
+          <DateComp /> {/* DateComp component */}
+        </div>
         <div
           style={{
             display: "flex",
@@ -180,6 +185,21 @@ const GetUsers = () => {
                 .filter((user) =>
                   user.name.toLowerCase().includes(keyword.toLowerCase())
                 )
+                .filter((user) => {
+                  if (low && high) {
+                    // Filter users based on both low and high date of birth
+                    return user.dob >= low && user.dob <= high;
+                  } else if (low) {
+                    // Filter users based on low date of birth only
+                    return user.dob >= low;
+                  } else if (high) {
+                    // Filter users based on high date of birth only
+                    return user.dob <= high;
+                  } else {
+                    // No date filter applied
+                    return true;
+                  }
+                })
                 .map((user) => (
                   <UserCard
                     key={user.uuid}
@@ -188,14 +208,30 @@ const GetUsers = () => {
                     onRemoveSavedUser={removeSavedUser}
                   />
                 ))
-            : newUsers.map((user) => (
-                <UserCard
-                  key={user.uuid}
-                  user={user}
-                  onUpdateUser={onUpdateUser}
-                  onRemoveSavedUser={removeSavedUser}
-                />
-              ))}
+            : newUsers
+                .filter((user) => {
+                  if (low && high) {
+                    // Filter users based on both low and high date of birth
+                    return user.dob >= low && user.dob <= high;
+                  } else if (low) {
+                    // Filter users based on low date of birth only
+                    return user.dob >= low;
+                  } else if (high) {
+                    // Filter users based on high date of birth only
+                    return user.dob <= high;
+                  } else {
+                    // No date filter applied
+                    return true;
+                  }
+                })
+                .map((user) => (
+                  <UserCard
+                    key={user.uuid}
+                    user={user}
+                    onUpdateUser={onUpdateUser}
+                    onRemoveSavedUser={removeSavedUser}
+                  />
+                ))}
         </div>
       </Container>
     </ThemeProvider>

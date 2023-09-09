@@ -8,6 +8,7 @@
     "@mui/icons-material": "^5.14.8",
     "@mui/lab": "^5.0.0-alpha.143",
     "@mui/material": "^5.14.8",
+    "@mui/styled-engine-sc": "^5.14.8",
     "@mui/x-date-pickers": "^6.13.0",
     "@mui/x-date-pickers-pro": "^6.13.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -15,12 +16,14 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.5.0",
     "bootstrap": "^5.3.1",
+    "dayjs": "^1.11.9",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "react-router-dom": "^6.15.0",
     "react-scripts": "5.0.1",
+    "styled-components": "^5.3.11",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

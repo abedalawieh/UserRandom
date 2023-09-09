@@ -11,19 +11,22 @@ import axios from "axios";
 import { RecoveryContext } from "../App";
 import Header from "../Components/Header";
 import SavedUserCard from "../Components/SvedUserCards";
+import DateComp from "../Components/DateComp";
 const defaultTheme = createTheme();
 const id = sessionStorage.getItem("id");
 const ViewAll = () => {
-  const [low, setLow] = useState("");
-  const [high, setHigh] = useState("");
-  const { keyword, setKeyword } = useContext(RecoveryContext);
-
+  const { keyword, setKeyword, low, high, setLow, setHigh } =
+    useContext(RecoveryContext);
   const fetchSavedUsers = () => {
-    fetch(`http://localhost:8800/api/getAll?sort=${low}&category=${high}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setNewUsers(data.data);
-      });
+    try {
+      fetch(`http://localhost:8800/api/getAll?low=${low}&high=${high}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setNewUsers(data.data);
+        });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -65,7 +68,11 @@ const ViewAll = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Header />
+
       <Container component="main" maxWidth="md">
+        <div style={{ marginBottom: "20px" }}>
+          <DateComp /> {/* DateComp component */}
+        </div>
         {/* Adjust maxWidth as needed */}
         <div
           style={{
