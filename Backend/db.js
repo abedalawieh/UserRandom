@@ -1,12 +1,21 @@
 import mysql from "mysql";
+
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "randomuserapp",
+  database: "userrandom",
 });
-db.connect((error) => {
-  if (error) throw error;
-  console.log("database connected succesfully");
-});
+
+try {
+  db.connect((error) => {
+    if (error) {
+      console.log(error.message);
+    }
+    console.log("Database connected successfully");
+  });
+} catch (error) {
+  console.error("Error connecting to the database:", error.message);
+}
+
 export { db };

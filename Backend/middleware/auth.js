@@ -14,7 +14,7 @@ const verifyToken = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JSON_SECRET);
     req.id = decoded.id;
   } catch (e) {
-    return res.status(401).send("Error in verification");
+    return res.status(401).send(e.message);
   }
   return next();
 };

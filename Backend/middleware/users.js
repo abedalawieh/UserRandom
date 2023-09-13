@@ -1,6 +1,46 @@
-import { json } from "express";
-import verifyToken from "./auth.js";
 import { db } from "../db.js";
+import jwt from "jsonwebtoken";
+
+export const login = async (req, res) => {
+  try {
+    const { valuesLogin } = req.body;
+    const username = valuesLogin.username;
+    const password = valuesLogin.password;
+
+    const sql = "SELECT * FROM users WHERE username = ? ";
+
+    db.query(sql, [username], async (err, data) => {
+      if (err) {
+        console.log(err);
+        return res.json({ Message: "Server Side Error" });
+      } else if (data.length > 0) {
+        const userpass = data[0];
+        const id = userpass.id;
+
+        if (password === userpass.password) {
+          // Correctly compare the passwords (not recommended for production)
+          const token = jwt.sign({ id }, process.env.JSON_SECRET, {
+            expiresIn: "10d",
+          });
+          return res.status(200).json({ Status: "Success", id, token });
+        } else {
+          return res.json({
+            Message:
+              "Incorrect login details. Please check your password and try again",
+          });
+        }
+      } else {
+        return res.json({
+          Message:
+            "The profile you requested could not be found. Please ensure the information is correct and try again.",
+        });
+      }
+    });
+  } catch (e) {
+    res.status(500).send("Something went wrong!!!");
+  }
+};
+
 export const getUsers = (req, res) => {
   try {
     let { id, low, high } = req.query;

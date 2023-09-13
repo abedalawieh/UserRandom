@@ -105,7 +105,7 @@ const UserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
         {
           headers: {
             // Include the token in the request headers
-            Authorization: token,
+            authorization: token,
           },
         }
       )
