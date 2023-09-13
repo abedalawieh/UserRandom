@@ -44,7 +44,7 @@ const Header = () => {
               <Nav className="justify-content-end flex-grow-1 pe-3">
                 <Nav.Link href="/">View All</Nav.Link>
                 <Nav.Link href="/newUsersRequest">Add New</Nav.Link>
-                <Nav.Link href="/" onClick={handleLogout}>
+                <Nav.Link href="/login" onClick={handleLogout}>
                   Logout
                 </Nav.Link>
               </Nav>

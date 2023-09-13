@@ -59,21 +59,18 @@ function App() {
     >
       <Router>
         <Routes>
-          <Route
-            path="/"
-            element={loggedin ? <ViewAll /> : <Navigate to="/login" />}
-          />
+          <Route path="/" element={loggedin ? <ViewAll /> : <LoginScreen />} />
           <Route
             path="/newUsersRequest"
-            element={loggedin ? <GetUsers /> : <Navigate to="/login" />}
+            element={loggedin ? <GetUsers /> : <LoginScreen />}
           />
           <Route
             path="/login"
-            element={loggedin ? <Navigate to="/" /> : <LoginScreen />}
+            element={loggedin ? <ViewAll /> : <LoginScreen />}
           />
           <Route
             path="/addManuel"
-            element={loggedin ? <ManuelRecords /> : <Navigate to="/login" />}
+            element={loggedin ? <ManuelRecords /> : <LoginScreen />}
           />
         </Routes>
 
