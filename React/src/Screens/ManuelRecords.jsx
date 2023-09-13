@@ -13,10 +13,41 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
-const defaultTheme = createTheme();
-const token = sessionStorage.getItem("token");
 
 const ManuelRecords = () => {
+  function convertToISODate(inputDate) {
+    // Split the input date string into day, month, and year components
+    const dateComponents = inputDate.split("/");
+
+    if (dateComponents.length !== 3) {
+      // Invalid input format
+      return null;
+    }
+
+    const day = parseInt(dateComponents[0], 10);
+    const month = parseInt(dateComponents[1], 10);
+    const year = parseInt(dateComponents[2], 10);
+
+    if (isNaN(day) || isNaN(month) || isNaN(year)) {
+      // Invalid date components
+      return null;
+    }
+
+    // Create a new Date object using the parsed components
+    const dateObject = new Date(year, month - 1, day);
+
+    // Check if the date is valid
+    if (isNaN(dateObject.getTime())) {
+      // Invalid date
+      return null;
+    }
+
+    // Format the date as ISO date (YYYY-MM-DD)
+    const isoDate = dateObject.toISOString().split("T")[0];
+    return isoDate;
+  }
+  const defaultTheme = createTheme();
+  const token = sessionStorage.getItem("token");
   const navigate = useNavigate();
   const itemsPerRow = 1; // Display 1 item on small screens
   const [messager, setMessager] = useState("");
@@ -45,7 +76,7 @@ const ManuelRecords = () => {
         .then((res) => {
           if (res.data.Status === "Successs") {
             setMessager("User Saved Successfully");
-            navigate("/newUsers");
+            navigate("/");
           } else {
             setMessager(res.data.Message);
           }
@@ -135,7 +166,13 @@ const ManuelRecords = () => {
                 type="text"
                 required
                 fullWidth
-                onChange={(e) => setValues({ ...values, dob: e.target.value })}
+                placeholder="dd/mm/yyyy"
+                onChange={(e) =>
+                  setValues({
+                    ...values,
+                    dob: convertToISODate(e.target.value),
+                  })
+                }
               />
             </CardContent>
           </CardActionArea>

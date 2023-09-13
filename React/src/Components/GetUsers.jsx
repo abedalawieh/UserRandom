@@ -18,11 +18,11 @@ import { RecoveryContext } from "../App";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
-const defaultTheme = createTheme();
-const id = sessionStorage.getItem("id");
-const token = sessionStorage.getItem("token");
-
 const GetUsers = () => {
+  const defaultTheme = createTheme();
+  const id = sessionStorage.getItem("id");
+  const token = sessionStorage.getItem("token");
+
   const { keyword, setKeyword, low, high, setLow, setHigh } =
     useContext(RecoveryContext);
   const [messager, setMessager] = useState("");

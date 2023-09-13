@@ -27,8 +27,9 @@ const VisuallyHiddenInput = styled("input")`
   white-space: nowrap;
   width: 1px;
 `;
-const token = sessionStorage.getItem("token");
 const SavedUserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
+  const token = sessionStorage.getItem("token");
+
   const itemsPerRow = window.innerWidth < 600 ? 1 : 3; // Display 1 item on small screens
   const [name, setName] = useState(user.name);
   const [location, setLocation] = useState(user.location);

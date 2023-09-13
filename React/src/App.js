@@ -9,7 +9,7 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  useNavigate,
+  Navigate,
 } from "react-router-dom";
 import ViewAll from "./Screens/ViewAll";
 import ManuelRecords from "./Screens/ManuelRecords";
@@ -24,6 +24,7 @@ function App() {
   const [keyword, setKeyword] = useState("");
   const [low, setLow] = useState("");
   const [high, setHigh] = useState("");
+  const [token, setToken] = useState("");
 
   const [loggedin, setLoggedIn] = useState(false);
 
@@ -52,23 +53,27 @@ function App() {
         low,
         setHigh,
         high,
+        token,
+        setToken,
       }}
     >
       <Router>
         <Routes>
-          <Route path="/" element={<LoginScreen />} />
-
           <Route
-            path="/newUsersRequest"
-            element={loggedin ? <GetUsers /> : <LoginScreen />}
+            path="/"
+            element={loggedin ? <ViewAll /> : <Navigate to="/login" />}
           />
           <Route
-            path="/newUsers"
-            element={loggedin ? <ViewAll /> : <LoginScreen />}
+            path="/newUsersRequest"
+            element={loggedin ? <GetUsers /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/login"
+            element={loggedin ? <Navigate to="/" /> : <LoginScreen />}
           />
           <Route
             path="/addManuel"
-            element={loggedin ? <ManuelRecords /> : <LoginScreen />}
+            element={loggedin ? <ManuelRecords /> : <Navigate to="/login" />}
           />
         </Routes>
 

@@ -1,21 +1,16 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useContext, useEffect, useState, useRef } from "react";
 import { RecoveryContext } from "../App";
 import axios from "axios";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
@@ -27,8 +22,9 @@ const VisuallyHiddenInput = styled("input")`
   white-space: nowrap;
   width: 1px;
 `;
-const token = sessionStorage.getItem("token");
 const UserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
+  const token = sessionStorage.getItem("token");
+
   const itemsPerRow = window.innerWidth < 600 ? 1 : 3; // Display 1 item on small screens
   const [messager, setMessager] = useState("");
   const [name, setName] = useState(user.name);
@@ -94,7 +90,7 @@ const UserCard = ({ user, onUpdateUser, onRemoveSavedUser }) => {
     dob,
   });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     axios
       .post(
         "http://localhost:8800/api/saveUser",

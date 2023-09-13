@@ -11,8 +11,8 @@ export const login = async (req, res) => {
 
     db.query(sql, [username], async (err, data) => {
       if (err) {
-        console.log(err);
-        return res.json({ Message: "Server Side Error" });
+        console.log(err.message);
+        return res.json(err.message);
       } else if (data.length > 0) {
         const userpass = data[0];
         const id = userpass.id;
@@ -37,7 +37,7 @@ export const login = async (req, res) => {
       }
     });
   } catch (e) {
-    res.status(500).send("Something went wrong!!!");
+    res.status(500).send("Something went wrong!!!", e.message);
   }
 };
 
@@ -62,8 +62,8 @@ export const getUsers = (req, res) => {
 
     db.query(getUsers, (error, result) => {
       if (error) {
-        console.log(error);
-        res.status(500).json({
+        console.log(error.message);
+        res.status(500).json(e.message, {
           success: false,
           description: "Server Error",
         });
@@ -75,8 +75,8 @@ export const getUsers = (req, res) => {
       }
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
+    console.log(err.message);
+    res.status(500).json(err.message, {
       success: false,
       description: "Server Error",
     });
@@ -106,16 +106,16 @@ export const saveUsers = (req, res) => {
 
     db.query(query, [values], (err, result) => {
       if (err) {
-        console.error("Error saving users:", err);
-        res.status(500).json({ error: "Error saving users" });
+        console.error("Error saving users:", err.message);
+        res.status(500).json(err.message, { error: "Error saving users" });
       } else {
         console.log("Users saved successfully");
         res.status(200).json({ message: "Users saved successfully" });
       }
     });
   } catch (e) {
-    console.log(err);
-    res.status(500).json({
+    console.log(e.Message);
+    res.status(500).json(e.message, {
       success: false,
       description: "Server Error",
     });
@@ -134,16 +134,18 @@ export const saveUser = async (req, res) => {
       [userid, uuid, picture, name, location, email, phone, nationality, dob],
       (err, data) => {
         if (err) {
-          console.log(err);
-          return res.status(500).json({ Message: "Server Side Error" });
+          console.log(err.message);
+          return res
+            .status(500)
+            .json(err.message, { Message: "Server Side Error" });
         }
 
         return res.status(200).json({ Status: "Successs" });
       }
     );
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
+    console.log(err.message);
+    res.status(500).json(err.message, {
       success: false,
       description: "Server Error",
     });
@@ -168,16 +170,18 @@ export const createUser = async (req, res) => {
       [userid, uuid, picture, name, location, email, phone, nationality, dob],
       (err, data) => {
         if (err) {
-          console.log(err);
-          return res.status(500).json({ Message: "Server Side Error" });
+          console.log(err.message);
+          return res
+            .status(500)
+            .json(err.message, { Message: "Server Side Error" });
         }
 
         return res.status(200).json({ Status: "Successs" });
       }
     );
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
+    console.log(err.message);
+    res.status(500).json(err.message, {
       success: false,
       description: "Server Error",
     });
@@ -194,8 +198,8 @@ export const updateUser = (req, res) => {
       [name, location, email, phone, nationality, dob, uuid],
       (error, result) => {
         if (error) {
-          console.log(error);
-          res.status(500).json({
+          console.log(error.message);
+          res.status(500).json(err.message, {
             success: false,
             description: "Server Error",
           });
@@ -208,8 +212,8 @@ export const updateUser = (req, res) => {
       }
     );
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
+    console.log(err.message);
+    res.status(500).json(err.message, {
       success: false,
       description: "Server Error",
     });
@@ -227,16 +231,18 @@ export const deleteUser = (req, res) => {
 
     db.query(deleteQuery, [userid, uuid], (error) => {
       if (error) {
-        console.error("Error deleting user:", error);
-        return res.status(500).json({ Message: "Server Side Error" });
+        console.error("Error deleting user:", error.message);
+        return res
+          .status(500)
+          .json(err.message, { Message: "Server Side Error" });
       }
 
       // Send a success response here if the deletion was successful
       res.status(200).json({ Message: "User deleted successfully" });
     });
   } catch (e) {
-    console.log(err);
-    res.status(500).json({
+    console.log(e.message);
+    res.status(500).json(e.message, {
       success: false,
       description: "Server Error",
     });

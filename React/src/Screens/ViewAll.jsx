@@ -12,11 +12,11 @@ import { RecoveryContext } from "../App";
 import Header from "../Components/Header";
 import SavedUserCard from "../Components/SvedUserCards";
 import DateComp from "../Components/DateComp";
-const defaultTheme = createTheme();
-const id = sessionStorage.getItem("id");
-const token = sessionStorage.getItem("token");
 
 const ViewAll = () => {
+  const defaultTheme = createTheme();
+  const id = sessionStorage.getItem("id");
+  const token = sessionStorage.getItem("token");
   const { keyword, setKeyword, low, high, setLow, setHigh } =
     useContext(RecoveryContext);
   const fetchSavedUsers = () => {

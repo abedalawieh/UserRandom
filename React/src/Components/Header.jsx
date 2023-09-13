@@ -24,7 +24,7 @@ const Header = () => {
     <>
       <Navbar bg="dark" variant="dark" className="bg-body-tertiary mb-3">
         <Container fluid>
-          <Navbar.Brand href="#">Random User App</Navbar.Brand>
+          <Navbar.Brand href="/">Random User App</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Offcanvas placement="end">
             <Offcanvas.Header closeButton>
@@ -42,7 +42,7 @@ const Header = () => {
                 <Button variant="outline-success">Search</Button>
               </Form>
               <Nav className="justify-content-end flex-grow-1 pe-3">
-                <Nav.Link href="/newUsers">View All</Nav.Link>
+                <Nav.Link href="/">View All</Nav.Link>
                 <Nav.Link href="/newUsersRequest">Add New</Nav.Link>
                 <Nav.Link href="/" onClick={handleLogout}>
                   Logout

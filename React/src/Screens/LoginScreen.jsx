@@ -17,7 +17,8 @@ import { FaExclamationTriangle } from "react-icons/fa";
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const LoginScreen = () => {
-  const { loggedin, setLoggedIn } = useContext(RecoveryContext);
+  const { loggedin, setLoggedIn, setToken, token } =
+    useContext(RecoveryContext);
 
   const defaultTheme = createTheme();
   const [message, setMessage] = useState("");
@@ -36,13 +37,14 @@ const LoginScreen = () => {
         if (res.data.Status === "Success") {
           const id = res.data.id;
           const token = res.data.token;
+          setToken(token);
           sessionStorage.setItem("loggedin", true);
           sessionStorage.setItem("id", id);
           sessionStorage.setItem("token", token);
 
           setLoggedIn(true);
 
-          navigate("/newUsersRequest");
+          navigate("/");
         } else {
           setMessage(res.data.Message);
         }
